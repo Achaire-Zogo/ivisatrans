@@ -1,5 +1,9 @@
+import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/material.dart';
 import 'package:translator/translator.dart';
+
+import '../../api/speech_api.dart';
+import '../../utils.dart';
 
 class Audio extends StatefulWidget {
   const Audio({Key? key}) : super(key: key);
@@ -25,7 +29,8 @@ class _AudioState extends State<Audio> {
     });
   }
 
-  String text = '';
+  String text = 'Press the button and start speaking';
+  bool isListening = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,13 +43,28 @@ class _AudioState extends State<Audio> {
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: FloatingActionButton(
-        child: Icon(
-          Icons.mic_none,
-          size: 36,
+      floatingActionButton: AvatarGlow(
+        animate: true,
+        endRadius: 75,
+        glowColor: Theme.of(context).primaryColor,
+        child: FloatingActionButton(
+          child: Icon(isListening ? Icons.mic : Icons.mic_none, size: 36),
+          onPressed: () {},
         ),
-        onPressed: () {},
       ),
     );
   }
+
+  Future toggleRecording() => SpeechApi.toggleRecording(
+        onResult: (text) => setState(() => this.text = text),
+        onListening: (isListening) {
+          setState(() => this.isListening = isListening);
+
+          if (!isListening) {
+            Future.delayed(Duration(seconds: 1), () {
+              Utils.scanText(text);
+            });
+          }
+        },
+      );
 }
