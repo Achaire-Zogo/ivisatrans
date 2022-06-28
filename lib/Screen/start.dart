@@ -22,7 +22,7 @@ class _HomePageAllState extends State<HomePageAll> {
     tabs = [
       const Home(),
       const Translate(),
-      const Audio(),
+      Audio(),
       // //TabScreen2(user: widget.user),
       // TabScreen4(user: widget.user),
     ];
@@ -36,18 +36,6 @@ class _HomePageAllState extends State<HomePageAll> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.blueAccent,
-          actions: <Widget>[
-            IconButton(
-              onPressed: () {
-                // gett();
-              },
-              icon: Icon(Icons.info),
-              color: Colors.grey,
-            )
-          ],
-        ),
         // drawer: NavDrawer(),
         body: tabs[currentTabIndex],
         bottomNavigationBar: BottomNavigationBar(

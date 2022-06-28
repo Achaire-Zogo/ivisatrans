@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:translator/translator.dart';
 
-import 'Audio.dart';
-
 class Translate extends StatefulWidget {
   const Translate({Key? key}) : super(key: key);
 
@@ -43,15 +41,6 @@ class _TranslateState extends State<Translate> {
                   "Press !!"), //on press to translate the language using function
               onPressed: () {
                 trans();
-              },
-            ),
-            RaisedButton(
-              color: Colors.red,
-              child: const Text(
-                  'audio'), //on press to translate the language using function
-              onPressed: () {
-                Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: (context) => const Audio()));
               },
             ),
             Text(out.toString()) //translated string
