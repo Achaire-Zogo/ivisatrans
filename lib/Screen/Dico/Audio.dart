@@ -1,10 +1,10 @@
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:clipboard/clipboard.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 import 'package:speech_to_text/speech_to_text.dart' as stt;
 import 'package:translator/translator.dart';
 
-import '../../api/speech_api.dart';
 import '../../utils.dart';
 import '../../widget/substring_highlighted.dart';
 
@@ -23,6 +23,13 @@ class _AudioState extends State<Audio> {
   String text = 'Press the button and start speaking';
   bool isListening = false;
   GoogleTranslator translator = GoogleTranslator();
+  final FlutterTts flutterTts = FlutterTts();
+
+  speak(String te) async {
+    await flutterTts.setLanguage("de");
+    await flutterTts.setPitch(0.5);
+    await flutterTts.speak(te);
+  }
 
   void trans() {
     translator.translate(text, to: 'de') //translating to hi = hindi
@@ -61,22 +68,32 @@ class _AudioState extends State<Audio> {
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(
-          title: Text(''),
+          title: const Text(''),
           centerTitle: true,
           actions: <Widget>[
             IconButton(
               onPressed: () {
-                trans();
+                speak(text);
               },
-              icon: Icon(Icons.book),
+              icon: const Icon(Icons.play_arrow),
               color: Colors.green,
             ),
             IconButton(
-              icon: Icon(Icons.content_copy),
+              onPressed: () {
+                // setState(() {
+                //   text = 'translating...';
+                // });
+                trans();
+              },
+              icon: const Icon(Icons.book),
+              color: Colors.green,
+            ),
+            IconButton(
+              icon: const Icon(Icons.content_copy),
               onPressed: () async {
                 await FlutterClipboard.copy(text);
                 Scaffold.of(context).showSnackBar(
-                  SnackBar(content: Text('✓   Copied to Clipboard')),
+                  const SnackBar(content: Text('✓   Copied to Clipboard')),
                 );
               },
             ),
@@ -89,7 +106,7 @@ class _AudioState extends State<Audio> {
             text: text,
             terms: Command.all,
             textStyle: const TextStyle(
-              fontSize: 32.0,
+              fontSize: 18.0,
               color: Colors.black,
               fontWeight: FontWeight.w400,
             ),
@@ -110,18 +127,5 @@ class _AudioState extends State<Audio> {
             onPressed: onListen,
           ),
         ),
-      );
-
-  Future toggleRecording() => SpeechApi.toggleRecording(
-        onResult: (text) => setState(() => this.text = text),
-        onListening: (isListening) {
-          setState(() => this.isListening = isListening);
-
-          if (!isListening) {
-            Future.delayed(Duration(seconds: 1), () {
-              Utils.scanText(text);
-            });
-          }
-        },
       );
 }
