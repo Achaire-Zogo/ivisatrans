@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:ivisatrans/Screen/Dico/Audio.dart';
 
+import 'Blog/screens/home.dart';
 import 'Dico/Translate.dart';
 import 'web/home.dart';
 
@@ -23,7 +24,7 @@ class _HomePageAllState extends State<HomePageAll> {
       const Home(),
       const Translate(),
       Audio(),
-      // //TabScreen2(user: widget.user),
+      Homes(),
       // TabScreen4(user: widget.user),
     ];
   }
