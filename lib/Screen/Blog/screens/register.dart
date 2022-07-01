@@ -48,71 +48,109 @@ class _RegisterState extends State<Register> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Register'),
+        title: Text(
+          'Register',
+          style: TextStyle(color: Colors.greenAccent),
+        ),
         centerTitle: true,
+        backgroundColor: Colors.white,
       ),
-      body: Form(
-        key: formKey,
-        child: ListView(
-          padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 32),
-          children: [
-            TextFormField(
-                controller: nameController,
-                validator: (val) => val!.isEmpty ? 'Invalid name' : null,
-                decoration: kInputDecoration('Name')),
-            SizedBox(
-              height: 20,
-            ),
-            TextFormField(
-                controller: emailController,
-                keyboardType: TextInputType.emailAddress,
-                validator: (val) =>
-                    val!.isEmpty ? 'Invalid email address' : null,
-                decoration: kInputDecoration('Email')),
-            SizedBox(
-              height: 20,
-            ),
-            TextFormField(
-                controller: passwordController,
-                obscureText: true,
-                validator: (val) =>
-                    val!.length < 6 ? 'Required at least 6 chars' : null,
-                decoration: kInputDecoration('Password')),
-            SizedBox(
-              height: 20,
-            ),
-            TextFormField(
-                controller: passwordConfirmController,
-                obscureText: true,
-                validator: (val) => val != passwordController.text
-                    ? 'Confirm password does not match'
-                    : null,
-                decoration: kInputDecoration('Confirm password')),
-            SizedBox(
-              height: 20,
-            ),
-            loading
-                ? Center(child: CircularProgressIndicator())
-                : kTextButton(
-                    'Register',
-                    () {
-                      if (formKey.currentState!.validate()) {
-                        setState(() {
-                          loading = !loading;
-                          _registerUser();
-                        });
-                      }
-                    },
+      body: SingleChildScrollView(
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 1.0, horizontal: 30.0),
+          child: Center(
+            child: Form(
+              key: formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[
+                  const SizedBox(height: 5),
+                  Image.asset(
+                    'assets/playstore.png',
+                    height: 80,
                   ),
-            SizedBox(
-              height: 20,
+                  TextFormField(
+                      controller: nameController,
+                      validator: (val) => val!.isEmpty ? 'Invalid name' : null,
+                      decoration: kInputDecoration('Name')),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  TextFormField(
+                      controller: emailController,
+                      keyboardType: TextInputType.emailAddress,
+                      validator: (val) =>
+                          val!.isEmpty ? 'Invalid email address' : null,
+                      decoration: kInputDecoration('Email')),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  TextFormField(
+                      controller: passwordController,
+                      obscureText: true,
+                      validator: (val) =>
+                          val!.length < 6 ? 'Required at least 6 chars' : null,
+                      decoration: kInputDecoration('Password')),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  TextFormField(
+                      controller: passwordConfirmController,
+                      obscureText: true,
+                      validator: (val) => val != passwordController.text
+                          ? 'Confirm password does not match'
+                          : null,
+                      decoration: kInputDecoration('Confirm password')),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  loading
+                      ? const Center(child: CircularProgressIndicator())
+                      : kTextButton(
+                          'Register',
+                          () {
+                            if (formKey.currentState!.validate()) {
+                              setState(() {
+                                loading = !loading;
+                                _registerUser();
+                              });
+                            }
+                          },
+                        ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  kLoginRegisterHint('Already have an account? ', 'Login', () {
+                    Navigator.of(context).pushAndRemoveUntil(
+                        MaterialPageRoute(builder: (context) => Login()),
+                        (route) => false);
+                  }),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                    BuildingButton(
+                      iconImage: const Image(
+                        height: 20,
+                        width: 20,
+                        image: AssetImage('assets/socials/facebook.png'),
+                      ),
+                      textButton: 'Facebook',
+                    ),
+                    const SizedBox(width: 10.0),
+                    BuildingButton(
+                      iconImage: const Image(
+                        height: 20,
+                        width: 20,
+                        image: AssetImage('assets/socials/google.jfif'),
+                      ),
+                      textButton: 'Google',
+                    )
+                  ])
+                ],
+              ),
             ),
-            kLoginRegisterHint('Already have an account? ', 'Login', () {
-              Navigator.of(context).pushAndRemoveUntil(
-                  MaterialPageRoute(builder: (context) => Login()),
-                  (route) => false);
-            })
-          ],
+          ),
         ),
       ),
     );
