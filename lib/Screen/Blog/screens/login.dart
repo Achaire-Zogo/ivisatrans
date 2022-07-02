@@ -1,12 +1,16 @@
-import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert';
 
+import 'package:flutter/material.dart';
+import 'package:ivisatrans/api/encrypt.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 import '../constant.dart';
 import '../models/api_response.dart';
 import '../models/user.dart';
 import '../services/user_service.dart';
 import 'home.dart';
 import 'register.dart';
+import 'dart:io';
 
 class Login extends StatefulWidget {
   @override
@@ -20,15 +24,68 @@ class _LoginState extends State<Login> {
   bool loading = false;
 
   void _loginUser() async {
-    ApiResponse response = await login(txtEmail.text, txtPassword.text);
-    if (response.error == null) {
-      _saveAndRedirectToHome(response.data as User);
-    } else {
+    print(encrypt(txtEmail.text));
+    try {
+      final response = await http.post(Uri.parse(loginURL),
+          headers: {'Accept': 'application/json'},
+          body: {
+            'email': encrypt(txtEmail.text),
+            'password': encrypt(txtPassword.text)
+          });
+      switch (response.statusCode) {
+        case 200:
+          var data = jsonDecode(decrypt(response.body));
+          var result = data["data"];
+          print(result);
+          int success = result[1];
+          if (success == 1) {
+            SharedPreferences pref = await SharedPreferences.getInstance();
+            await pref.setString('username', result[2]["username"] ?? '');
+            await pref.setString('email', result[2]["email"] ?? '');
+            await pref.setString('phone', result[2]["phone"] ?? '');
+            await pref.setInt('userId', result[2]["id"] ?? 0);
+            Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(builder: (context) => Homes()), (
+                route) => false);
+          } else {
+            setState(() {
+              loading = false;
+            });
+            ScaffoldMessenger.of(context)
+                .showSnackBar(SnackBar(content: Text(result[0])));
+          }
+
+          break;
+        case 422:
+          setState(() {
+            loading = false;
+          });
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackBar(content: Text('server error')));
+          break;
+        case 403:
+          setState(() {
+            loading = false;
+          });
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackBar(content: Text('server error')));
+          break;
+        default:
+          setState(() {
+            loading = false;
+          });
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackBar(content: Text('something is wrong')));
+          break;
+      }
+    } on SocketException {
       setState(() {
         loading = false;
       });
       ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text('${response.error}')));
+          .showSnackBar(SnackBar(content: Text('check internet'),duration: Duration(seconds: 4),));
+    } on Exception catch (e) {
+      throw Exception(e);
     }
   }
 

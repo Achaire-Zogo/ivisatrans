@@ -18,6 +18,7 @@ class _RegisterState extends State<Register> {
   bool loading = false;
   TextEditingController nameController = TextEditingController(),
       emailController = TextEditingController(),
+      phoneController = TextEditingController(),
       passwordController = TextEditingController(),
       passwordConfirmController = TextEditingController();
 
@@ -82,6 +83,15 @@ class _RegisterState extends State<Register> {
                       validator: (val) =>
                           val!.isEmpty ? 'Invalid email address' : null,
                       decoration: kInputDecoration('Email')),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  TextFormField(
+                      controller: phoneController,
+                      keyboardType: TextInputType.number,
+                      validator: (val) =>
+                          val!.isEmpty ? 'Invalid phone number' : null,
+                      decoration: kInputDecoration('Phone')),
                   const SizedBox(
                     height: 20,
                   ),
