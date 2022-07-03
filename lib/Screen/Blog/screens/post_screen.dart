@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../constant.dart';
+import '../Url.dart';
 import '../models/api_response.dart';
 import '../models/post.dart';
 import '../services/post_service.dart';
@@ -29,7 +29,7 @@ class _PostScreenState extends State<PostScreen> {
         _postList = response.data as List<dynamic>;
         _loading = _loading ? !_loading : _loading;
       });
-    } else if (response.error == unauthorized) {
+    } else if (response.error == Url.unauthorized) {
       logout().then((value) => {
             Navigator.of(context).pushAndRemoveUntil(
                 MaterialPageRoute(builder: (context) => Login()),
@@ -46,7 +46,7 @@ class _PostScreenState extends State<PostScreen> {
     ApiResponse response = await deletePost(postId);
     if (response.error == null) {
       retrievePosts();
-    } else if (response.error == unauthorized) {
+    } else if (response.error == Url.unauthorized) {
       logout().then((value) => {
             Navigator.of(context).pushAndRemoveUntil(
                 MaterialPageRoute(builder: (context) => Login()),
@@ -64,7 +64,7 @@ class _PostScreenState extends State<PostScreen> {
 
     if (response.error == null) {
       retrievePosts();
-    } else if (response.error == unauthorized) {
+    } else if (response.error == Url.unauthorized) {
       logout().then((value) => {
             Navigator.of(context).pushAndRemoveUntil(
                 MaterialPageRoute(builder: (context) => Login()),

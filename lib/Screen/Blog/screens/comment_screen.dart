@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../constant.dart';
+import '../Url.dart';
 import '../models/api_response.dart';
 import '../models/comment.dart';
 import '../services/comment_service.dart';
@@ -33,7 +33,7 @@ class _CommentScreenState extends State<CommentScreen> {
         _commentsList = response.data as List<dynamic>;
         _loading = _loading ? !_loading : _loading;
       });
-    } else if (response.error == unauthorized) {
+    } else if (response.error == Url.unauthorized) {
       logout().then((value) => {
             Navigator.of(context).pushAndRemoveUntil(
                 MaterialPageRoute(builder: (context) => Login()),
@@ -53,7 +53,7 @@ class _CommentScreenState extends State<CommentScreen> {
     if (response.error == null) {
       _txtCommentController.clear();
       _getComments();
-    } else if (response.error == unauthorized) {
+    } else if (response.error == Url.unauthorized) {
       logout().then((value) => {
             Navigator.of(context).pushAndRemoveUntil(
                 MaterialPageRoute(builder: (context) => Login()),
@@ -77,7 +77,7 @@ class _CommentScreenState extends State<CommentScreen> {
       _editCommentId = 0;
       _txtCommentController.clear();
       _getComments();
-    } else if (response.error == unauthorized) {
+    } else if (response.error == Url.unauthorized) {
       logout().then((value) => {
             Navigator.of(context).pushAndRemoveUntil(
                 MaterialPageRoute(builder: (context) => Login()),
@@ -95,7 +95,7 @@ class _CommentScreenState extends State<CommentScreen> {
 
     if (response.error == null) {
       _getComments();
-    } else if (response.error == unauthorized) {
+    } else if (response.error == Url.unauthorized) {
       logout().then((value) => {
             Navigator.of(context).pushAndRemoveUntil(
                 MaterialPageRoute(builder: (context) => Login()),

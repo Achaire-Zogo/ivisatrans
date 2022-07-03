@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../constant.dart';
+import '../Url.dart';
 import '../models/api_response.dart';
 import '../models/post.dart';
 import '../services/post_service.dart';
@@ -42,7 +42,7 @@ class _PostFormState extends State<PostForm> {
 
     if (response.error == null) {
       Navigator.of(context).pop();
-    } else if (response.error == unauthorized) {
+    } else if (response.error == Url.unauthorized) {
       logout().then((value) => {
             Navigator.of(context).pushAndRemoveUntil(
                 MaterialPageRoute(builder: (context) => Login()),
@@ -62,7 +62,7 @@ class _PostFormState extends State<PostForm> {
     ApiResponse response = await editPost(postId, _txtControllerBody.text);
     if (response.error == null) {
       Navigator.of(context).pop();
-    } else if (response.error == unauthorized) {
+    } else if (response.error == Url.unauthorized) {
       logout().then((value) => {
             Navigator.of(context).pushAndRemoveUntil(
                 MaterialPageRoute(builder: (context) => Login()),

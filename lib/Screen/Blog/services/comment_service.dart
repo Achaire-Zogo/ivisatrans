@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 
-import '../constant.dart';
+import '../Url.dart';
 import '../models/api_response.dart';
 import '../models/comment.dart';
 import 'user_service.dart';
@@ -12,7 +12,7 @@ Future<ApiResponse> getComments(int postId) async {
   ApiResponse apiResponse = ApiResponse();
   try {
     String token = await getToken();
-    final response = await http.get(Uri.parse('$postsURL/$postId/comments'),
+    final response = await http.get(Uri.parse('$Url.postsURL/$postId/comments'),
         headers: {
           'Accept': 'application/json',
           'Authorization': 'Bearer $token'
@@ -30,14 +30,14 @@ Future<ApiResponse> getComments(int postId) async {
         apiResponse.error = jsonDecode(response.body)['message'];
         break;
       case 401:
-        apiResponse.error = unauthorized;
+        apiResponse.error = Url.unauthorized;
         break;
       default:
-        apiResponse.error = somethingWentWrong;
+        apiResponse.error = Url.somethingWentWrong;
         break;
     }
   } catch (e) {
-    apiResponse.error = serverError;
+    apiResponse.error = Url.serverError;
   }
   return apiResponse;
 }
@@ -47,7 +47,7 @@ Future<ApiResponse> createComment(int postId, String? comment) async {
   ApiResponse apiResponse = ApiResponse();
   try {
     String token = await getToken();
-    final response = await http.post(Uri.parse('$postsURL/$postId/comments'),
+    final response = await http.post(Uri.parse('$Url.postsURL/$postId/comments'),
         headers: {
           'Accept': 'application/json',
           'Authorization': 'Bearer $token'
@@ -64,14 +64,14 @@ Future<ApiResponse> createComment(int postId, String? comment) async {
         apiResponse.error = jsonDecode(response.body)['message'];
         break;
       case 401:
-        apiResponse.error = unauthorized;
+        apiResponse.error = Url.unauthorized;
         break;
       default:
-        apiResponse.error = somethingWentWrong;
+        apiResponse.error = Url.somethingWentWrong;
         break;
     }
   } catch (e) {
-    apiResponse.error = serverError;
+    apiResponse.error = Url.serverError;
   }
   return apiResponse;
 }
@@ -81,7 +81,7 @@ Future<ApiResponse> deleteComment(int commentId) async {
   ApiResponse apiResponse = ApiResponse();
   try {
     String token = await getToken();
-    final response = await http.delete(Uri.parse('$commentsURL/$commentId'),
+    final response = await http.delete(Uri.parse('$Url.commentsURL/$commentId'),
         headers: {
           'Accept': 'application/json',
           'Authorization': 'Bearer $token'
@@ -95,14 +95,14 @@ Future<ApiResponse> deleteComment(int commentId) async {
         apiResponse.error = jsonDecode(response.body)['message'];
         break;
       case 401:
-        apiResponse.error = unauthorized;
+        apiResponse.error = Url.unauthorized;
         break;
       default:
-        apiResponse.error = somethingWentWrong;
+        apiResponse.error = Url.somethingWentWrong;
         break;
     }
   } catch (e) {
-    apiResponse.error = serverError;
+    apiResponse.error = Url.serverError;
   }
   return apiResponse;
 }
@@ -112,7 +112,7 @@ Future<ApiResponse> editComment(int commentId, String comment) async {
   ApiResponse apiResponse = ApiResponse();
   try {
     String token = await getToken();
-    final response = await http.put(Uri.parse('$commentsURL/$commentId'),
+    final response = await http.put(Uri.parse('$Url.commentsURL/$commentId'),
         headers: {
           'Accept': 'application/json',
           'Authorization': 'Bearer $token'
@@ -129,14 +129,14 @@ Future<ApiResponse> editComment(int commentId, String comment) async {
         apiResponse.error = jsonDecode(response.body)['message'];
         break;
       case 401:
-        apiResponse.error = unauthorized;
+        apiResponse.error = Url.unauthorized;
         break;
       default:
-        apiResponse.error = somethingWentWrong;
+        apiResponse.error = Url.somethingWentWrong;
         break;
     }
   } catch (e) {
-    apiResponse.error = serverError;
+    apiResponse.error = Url.serverError;
   }
   return apiResponse;
 }

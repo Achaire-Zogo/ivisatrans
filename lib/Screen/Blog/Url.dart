@@ -1,18 +1,22 @@
 // ----- STRINGS ------
 import 'package:flutter/material.dart';
 
-const baseURL = 'http://your-Ip:8000/api';
-const loginURL = baseURL + '/login';
-const registerURL = baseURL + '/register';
-const logoutURL = baseURL + '/logout';
-const userURL = baseURL + '/user';
-const postsURL = baseURL + '/posts';
-const commentsURL = baseURL + '/comments';
+class Url{
+  static const baseURL = 'http://your-Ip:8000/api';
+  static const loginURL = baseURL + '/login';
+  static const registerURL = baseURL + '/register';
+  static const logoutURL = baseURL + '/logout';
+  static const userURL = baseURL + '/user';
+  static const postsURL = baseURL + '/posts';
+  static const commentsURL = baseURL + '/comments';
 
 // ----- Errors -----
-const serverError = 'Server error';
-const unauthorized = 'Unauthorized';
-const somethingWentWrong = 'Something went wrong, try again!';
+  static const serverError = 'Server error';
+  static const unauthorized = 'Unauthorized';
+  static const somethingWentWrong = 'Something went wrong, try again!';
+}
+
+
 
 // --- input decoration
 InputDecoration kInputDecoration(String label) {

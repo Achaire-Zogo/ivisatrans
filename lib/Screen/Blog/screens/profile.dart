@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../constant.dart';
+import '../Url.dart';
 import '../models/api_response.dart';
 import '../models/user.dart';
 import '../services/user_service.dart';
@@ -40,7 +40,7 @@ class _ProfileState extends State<Profile> {
         loading = false;
         txtNameController.text = user!.name ?? '';
       });
-    } else if (response.error == unauthorized) {
+    } else if (response.error == Url.unauthorized) {
       logout().then((value) => {
             Navigator.of(context).pushAndRemoveUntil(
                 MaterialPageRoute(builder: (context) => Login()),
@@ -62,7 +62,7 @@ class _ProfileState extends State<Profile> {
     if (response.error == null) {
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text('${response.data}')));
-    } else if (response.error == unauthorized) {
+    } else if (response.error == Url.unauthorized) {
       logout().then((value) => {
             Navigator.of(context).pushAndRemoveUntil(
                 MaterialPageRoute(builder: (context) => Login()),

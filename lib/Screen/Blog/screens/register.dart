@@ -1,12 +1,15 @@
+import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import '../constant.dart';
+import '../../../api/encrypt.dart';
+import '../Url.dart';
 import '../models/api_response.dart';
 import '../models/user.dart';
 import '../services/user_service.dart';
 import 'home.dart';
 import 'login.dart';
+import 'package:http/http.dart' as http;
 
 class Register extends StatefulWidget {
   @override
@@ -23,17 +26,82 @@ class _RegisterState extends State<Register> {
       passwordConfirmController = TextEditingController();
 
   void _registerUser() async {
-    ApiResponse response = await register(
-        nameController.text, emailController.text, passwordController.text);
-    if (response.error == null) {
-      _saveAndRedirectToHome(response.data as User);
-    } else {
+    try {
+      final response = await http.post(Uri.parse(Url.registerURL),
+          headers: {'Accept': 'application/json'},
+          body: {
+            'username': encrypt(nameController.text),
+            'email': encrypt(emailController.text),
+            'phone': encrypt(phoneController.text),
+            'password': encrypt(passwordController.text)
+          });
+      switch (response.statusCode) {
+        case 200:
+          var data = jsonDecode(decrypt(response.body));
+          var result = data["data"];
+          print(result);
+          int success = result[1];
+          if (success == 1) {
+            setState(() {
+              loading = false;
+            });
+            ScaffoldMessenger.of(context)
+                .showSnackBar(SnackBar(content: Text("success")));
+
+            // SharedPreferences pref = await SharedPreferences.getInstance();
+            // await pref.setString('username', result[2]["username"] ?? '');
+            // await pref.setString('email', result[2]["email"] ?? '');
+            // await pref.setString('phone', result[2]["phone"] ?? '');
+            // await pref.setInt('userId', result[2]["id"] ?? 0);
+            // Navigator.of(context).pushAndRemoveUntil(
+            //     MaterialPageRoute(builder: (context) => Homes()), (
+            //     route) => false);
+          } else {
+            setState(() {
+              loading = false;
+            });
+            ScaffoldMessenger.of(context)
+                .showSnackBar(SnackBar(content: Text(result[0])));
+          }
+
+          break;
+        case 422:
+          setState(() {
+            loading = false;
+          });
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackBar(content: Text('server error')));
+          break;
+        case 403:
+          setState(() {
+            loading = false;
+          });
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackBar(content: Text('server error')));
+          break;
+        default:
+          setState(() {
+            loading = false;
+          });
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackBar(content: Text('something is wrong')));
+          break;
+      }
+    }on SocketException catch(e){
+      setState(() {
+        loading = false;
+      });
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text('check internet'),duration: Duration(seconds: 4),));
+    }on Exception catch (e) {
       setState(() {
         loading = !loading;
       });
       ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text('${response.error}')));
+          .showSnackBar(SnackBar(content: Text('something wrong')));
+      throw Exception(e);
     }
+
   }
 
   // Save and redirect to home

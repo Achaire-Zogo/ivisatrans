@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:ivisatrans/Screen/Blog/services/user_service.dart';
 
-import '../constant.dart';
+import '../Url.dart';
 import '../models/api_response.dart';
 import '../models/post.dart';
 
@@ -12,7 +12,7 @@ Future<ApiResponse> getPosts() async {
   ApiResponse apiResponse = ApiResponse();
   try {
     String token = await getToken();
-    final response = await http.get(Uri.parse(postsURL), headers: {
+    final response = await http.get(Uri.parse(Url.postsURL), headers: {
       'Accept': 'application/json',
       'Authorization': 'Bearer $token'
     });
@@ -26,14 +26,14 @@ Future<ApiResponse> getPosts() async {
         apiResponse.data as List<dynamic>;
         break;
       case 401:
-        apiResponse.error = unauthorized;
+        apiResponse.error = Url.unauthorized;
         break;
       default:
-        apiResponse.error = somethingWentWrong;
+        apiResponse.error = Url.somethingWentWrong;
         break;
     }
   } catch (e) {
-    apiResponse.error = serverError;
+    apiResponse.error = Url.serverError;
   }
   return apiResponse;
 }
@@ -43,7 +43,7 @@ Future<ApiResponse> createPost(String body, String? image) async {
   ApiResponse apiResponse = ApiResponse();
   try {
     String token = await getToken();
-    final response = await http.post(Uri.parse(postsURL),
+    final response = await http.post(Uri.parse(Url.postsURL),
         headers: {
           'Accept': 'application/json',
           'Authorization': 'Bearer $token'
@@ -61,15 +61,15 @@ Future<ApiResponse> createPost(String body, String? image) async {
         apiResponse.error = errors[errors.keys.elementAt(0)][0];
         break;
       case 401:
-        apiResponse.error = unauthorized;
+        apiResponse.error = Url.unauthorized;
         break;
       default:
         print(response.body);
-        apiResponse.error = somethingWentWrong;
+        apiResponse.error = Url.somethingWentWrong;
         break;
     }
   } catch (e) {
-    apiResponse.error = serverError;
+    apiResponse.error = Url.serverError;
   }
   return apiResponse;
 }
@@ -79,7 +79,7 @@ Future<ApiResponse> editPost(int postId, String body) async {
   ApiResponse apiResponse = ApiResponse();
   try {
     String token = await getToken();
-    final response = await http.put(Uri.parse('$postsURL/$postId'), headers: {
+    final response = await http.put(Uri.parse('$Url.postsURL/$postId'), headers: {
       'Accept': 'application/json',
       'Authorization': 'Bearer $token'
     }, body: {
@@ -94,14 +94,14 @@ Future<ApiResponse> editPost(int postId, String body) async {
         apiResponse.error = jsonDecode(response.body)['message'];
         break;
       case 401:
-        apiResponse.error = unauthorized;
+        apiResponse.error = Url.unauthorized;
         break;
       default:
-        apiResponse.error = somethingWentWrong;
+        apiResponse.error = Url.somethingWentWrong;
         break;
     }
   } catch (e) {
-    apiResponse.error = serverError;
+    apiResponse.error = Url.serverError;
   }
   return apiResponse;
 }
@@ -111,7 +111,7 @@ Future<ApiResponse> deletePost(int postId) async {
   ApiResponse apiResponse = ApiResponse();
   try {
     String token = await getToken();
-    final response = await http.delete(Uri.parse('$postsURL/$postId'),
+    final response = await http.delete(Uri.parse('$Url.postsURL/$postId'),
         headers: {
           'Accept': 'application/json',
           'Authorization': 'Bearer $token'
@@ -125,14 +125,14 @@ Future<ApiResponse> deletePost(int postId) async {
         apiResponse.error = jsonDecode(response.body)['message'];
         break;
       case 401:
-        apiResponse.error = unauthorized;
+        apiResponse.error = Url.unauthorized;
         break;
       default:
-        apiResponse.error = somethingWentWrong;
+        apiResponse.error = Url.somethingWentWrong;
         break;
     }
   } catch (e) {
-    apiResponse.error = serverError;
+    apiResponse.error = Url.serverError;
   }
   return apiResponse;
 }
@@ -142,7 +142,7 @@ Future<ApiResponse> likeUnlikePost(int postId) async {
   ApiResponse apiResponse = ApiResponse();
   try {
     String token = await getToken();
-    final response = await http.post(Uri.parse('$postsURL/$postId/likes'),
+    final response = await http.post(Uri.parse('$Url.postsURL/$postId/likes'),
         headers: {
           'Accept': 'application/json',
           'Authorization': 'Bearer $token'
@@ -153,14 +153,14 @@ Future<ApiResponse> likeUnlikePost(int postId) async {
         apiResponse.data = jsonDecode(response.body)['message'];
         break;
       case 401:
-        apiResponse.error = unauthorized;
+        apiResponse.error = Url.unauthorized;
         break;
       default:
-        apiResponse.error = somethingWentWrong;
+        apiResponse.error = Url.somethingWentWrong;
         break;
     }
   } catch (e) {
-    apiResponse.error = serverError;
+    apiResponse.error = Url.serverError;
   }
   return apiResponse;
 }

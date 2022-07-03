@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../constant.dart';
+import '../Url.dart';
 import '../models/api_response.dart';
 import '../services/user_service.dart';
 import 'home.dart';
@@ -22,7 +22,7 @@ class _LoadingState extends State<Loading> {
       if (response.error == null) {
         Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(builder: (context) => Homes()), (route) => false);
-      } else if (response.error == unauthorized) {
+      } else if (response.error == Url.unauthorized) {
         Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(builder: (context) => Login()), (route) => false);
       } else {
