@@ -1,10 +1,10 @@
 // ----- STRINGS ------
 import 'package:flutter/material.dart';
 
-class Url{
-  static const baseURL = 'http://your-Ip:8000/api';
-  static const loginURL = baseURL + '/login';
-  static const registerURL = baseURL + '/register';
+class Url {
+  static const baseURL = 'https://trans-visa.herokuapp.com';
+  static const loginURL = baseURL + '/Auth/login.php';
+  static const registerURL = baseURL + '/Auth/register.php';
   static const logoutURL = baseURL + '/logout';
   static const userURL = baseURL + '/user';
   static const postsURL = baseURL + '/posts';
@@ -15,8 +15,6 @@ class Url{
   static const unauthorized = 'Unauthorized';
   static const somethingWentWrong = 'Something went wrong, try again!';
 }
-
-
 
 // --- input decoration
 InputDecoration kInputDecoration(String label) {

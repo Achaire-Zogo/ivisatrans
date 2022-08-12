@@ -47,7 +47,7 @@ class _HomesState extends State<Homes> {
         notchMargin: 5,
         elevation: 10,
         clipBehavior: Clip.antiAlias,
-        shape: CircularNotchedRectangle(),
+        shape: const CircularNotchedRectangle(),
         child: BottomNavigationBar(
           items: [
             BottomNavigationBarItem(icon: Icon(Icons.home), label: ''),

@@ -1,15 +1,15 @@
 import 'dart:convert';
 import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+
 import '../../../api/encrypt.dart';
 import '../Url.dart';
-import '../models/api_response.dart';
 import '../models/user.dart';
-import '../services/user_service.dart';
 import 'home.dart';
 import 'login.dart';
-import 'package:http/http.dart' as http;
 
 class Register extends StatefulWidget {
   @override
@@ -27,14 +27,30 @@ class _RegisterState extends State<Register> {
 
   void _registerUser() async {
     try {
-      final response = await http.post(Uri.parse(Url.registerURL),
-          headers: {'Accept': 'application/json'},
-          body: {
-            'username': encrypt(nameController.text),
-            'email': encrypt(emailController.text),
-            'phone': encrypt(phoneController.text),
-            'password': encrypt(passwordController.text)
-          });
+      final response = await http.post(Uri.parse(Url.registerURL), headers: {
+        'Accept': 'application/json'
+      }, body: {
+        'username': encrypt(nameController.text).toString(),
+        'email': encrypt(emailController.text).toString(),
+        'phone': encrypt(phoneController.text).toString(),
+        'password': encrypt(passwordController.text).toString()
+      });
+      String a = encrypt(nameController.text);
+      print(a);
+      String b = decrypt(a);
+      print(b);
+
+      print(encrypt(phoneController.text));
+      print(encrypt(passwordController.text));
+
+      String c = encrypt(emailController.text);
+      print(c);
+      String d = decrypt(c);
+      print(d);
+      // print(decrypt(emailController.text));
+      // print(decrypt(phoneController.text));
+      // print(decrypt(passwordController.text));
+
       switch (response.statusCode) {
         case 200:
           var data = jsonDecode(decrypt(response.body));
@@ -87,21 +103,23 @@ class _RegisterState extends State<Register> {
               .showSnackBar(SnackBar(content: Text('something is wrong')));
           break;
       }
-    }on SocketException catch(e){
+    } on SocketException catch (e) {
+      print("check internet");
       setState(() {
         loading = false;
       });
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text('check internet'),duration: Duration(seconds: 4),));
-    }on Exception catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('check internet'),
+        duration: Duration(seconds: 4),
+      ));
+    } on Exception catch (e) {
       setState(() {
         loading = !loading;
       });
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text('something wrong')));
-      throw Exception(e);
+      print(e);
     }
-
   }
 
   // Save and redirect to home
