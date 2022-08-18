@@ -45,7 +45,7 @@ class _AudioState extends State<Audio> {
   void onListen() async {
     if (!isListening) {
       bool available = await _speech.initialize(
-          onStatus: (status) => print("$status"),
+          onStatus: (status) => print("This is status" + "$status"),
           onError: (errorNotification) => print("$errorNotification"));
       if (available) {
         setState(() {

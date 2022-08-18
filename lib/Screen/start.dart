@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:ivisatrans/Screen/Dico/Audio.dart';
 
-import 'Blog/screens/home.dart';
 import 'Blog/screens/loading.dart';
 import 'Dico/Translate.dart';
-import 'web/home.dart';
+import 'home.dart';
 
 class HomePageAll extends StatefulWidget {
   const HomePageAll();
@@ -22,7 +21,7 @@ class _HomePageAllState extends State<HomePageAll> {
   void initState() {
     super.initState();
     tabs = [
-      const Home(),
+      HomePage(),
       const Translate(),
       Audio(),
       Loading(),

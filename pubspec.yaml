@@ -24,6 +24,12 @@ dependencies:
     sdk: flutter
   cupertino_icons: ^1.0.2
   http: ^0.13.3
+  flutter_svg: ^0.22.0
+  google_fonts: ^2.1.0
+  smooth_page_indicator: ^0.2.3
+  cached_network_image: ^3.0.0
+  device_preview: ^0.7.3
+  
 
   shared_preferences: ^2.0.6
   image_picker: ^0.7.5+4
@@ -53,3 +59,5 @@ flutter:
   assets:
     - assets/
     - assets/socials/
+    - assets/images/
+    - assets/svg/
